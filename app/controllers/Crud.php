@@ -54,7 +54,7 @@ class Crud extends Controller {
                 'idStatus_fk' => $_POST['idStatus_fk'] ?? 1
             ];
 
-            $result = $this->model('Home_model')->updateCar($data, $idCars);
+            $result = $this->model('Home_model')->updateCar($idCars, $data);
             echo json_encode(['success' => $result]);
         }
     }
@@ -67,6 +67,56 @@ class Crud extends Controller {
             // die();
             header('Content-Type: application/json');
             echo json_encode(['success' => $result]);
+        }
+    }
+
+    public function getMerek() {
+        $merekList = $this->model('Home_model')->getAllMerek() ?: [];
+        header('Content-Type: application/json');
+        echo json_encode(['success' => true, 'data' => $merekList]);
+    }
+
+    public function getJenis() {
+        $jenisList = $this->model('Home_model')->getAllJenis() ?: [];
+        header('Content-Type: application/json');
+        echo json_encode(['success' => true, 'data' => $jenisList]);
+    }
+    public function addMerek() {
+        var_dump($_POST);
+        $namaMerek = $_POST['namamerek'] ?? "";
+        var_dump($namaMerek);
+        $addMerek = $this->model('Home_model')->insertMerek(['namamerek' => $namaMerek]) ?: false;
+
+        header('Content-Type: application/json');
+        if($addMerek) {
+            echo json_encode(['success' => true, 'data' => $addMerek]);
+        } else {
+            echo json_encode(['success' => false]);
+        }
+    }
+    public function editMerek() {
+        $idMerek = $_POST['idmerek'] ?? "";
+        $namaMerek = $_POST['namamerek'] ?? "";
+
+        $editMerek = $this->model('Home_model')->updateMerek($idMerek, ['namamerek' => $namaMerek]) ?: false;
+
+        header('Content-Type: application/json');
+        if($editMerek) {
+            echo json_encode(['success' => true, 'data' => $editMerek]);
+        } else {
+            echo json_encode(['success' => false]);
+        }
+    }
+    public function deleteMerek() {
+        $idMerek = $_POST['idmerek'] ?? "";
+
+        $deleteMerek = $this->model('Home_model')->deleteMerek($idMerek);
+
+        header('Content-Type: application/json');
+        if($deleteMerek) {
+            echo json_encode(['success' => true]);
+        } else {
+            echo json_encode(['success' => false]);
         }
     }
 }
