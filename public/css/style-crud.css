@@ -190,3 +190,10 @@ button.second-button {
     color: white;
     border-radius: 5px;
 }
+
+/* Show & Hide Modal Styling */
+.modal {
+    display: none;
+}.modal.show {
+    display: block;
+}
