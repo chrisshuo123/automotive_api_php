@@ -1,3 +1,4 @@
+// Insert Car Form
 document.addEventListener('DOMContentLoaded', function() {
     const form = document.getElementById('insertCarForm');
     if (form) {
@@ -32,6 +33,7 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 });
 
+// For Loading All List of Cars Row Data
 export async function getAllCars() {
     try {
         const response = await fetch('http://localhost/automotive_api_php/public/crud/getCars');
@@ -43,7 +45,8 @@ export async function getAllCars() {
     }
 }
 
-function deleteCar(idcars) {
+// To Delete a Car Selected
+export function deleteCar(idcars) {
     if(confirm('Are you sure you want to delete this car?')) {
         console.log('Deleting car with ID: ', idcars);
 
@@ -70,5 +73,81 @@ function deleteCar(idcars) {
             console.error('Fetch Error: ', error);
             alert('Error: ', error.message());
         });
+    }
+}
+
+// To Load Lists of Brand Rows, primarily for the Modal Pop-Up Edit
+export async function getAllBrands() {
+    try {
+        const response = await fetch('http://localhost/automotive_api_php/public/crud/getMerek');
+                                // .then(res => res.json())             // Debugging
+                                // .then(console.log(result.data[0]));  // Debugging (; atas hapus)
+        const result = await response.json();
+        return result.data.map(m => ({
+            value: m.idmerek,   // ← cek nama field asli dulu, lihat catatan di bawah
+            label: m.namamerek  // ← cek nama field asli dulu, lihat catatan di bawah
+        }));
+    } catch(error) {
+        console.error('Error fetching brand list in getAllBrands: ', error);
+        return [];
+    }
+}
+
+export async function insertBrand(namaMerek) {
+    try {
+        const response = await fetch('http://localhost/automotive_api_php/public/crud/addMerek', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+            body: 'namamerek= ' + encodeURIComponent(namaMerek)
+        });
+        const data = await response.json();
+        return data;
+    } catch(error) {
+        console.error('Error inserting brand: ', error);
+        return { success: false };
+    }
+}
+
+export async function editBrand(idMerek, namaMerek) {
+    try {
+        const response = await fetch('http://localhost/automotive_api_php/public/crud/editMerek', {
+            method: 'POST',
+            headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+            body: 'idmerek=' + encodeURIComponent(idMerek) + '&namamerek=' + encodeURIComponent(namaMerek)
+        });
+        const result = await response.json();
+        return result;
+    } catch(error) {
+        console.error('Error editing brand: ', error);
+        return { success: false };
+    }
+}
+
+export async function deleteBrand(idMerek) {
+    try {
+        const response = await fetch('http://localhost/automotive_api_php/public/crud/deleteMerek', {
+            method: 'POST', // Perlu sejenis Drop?
+            headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+            body: 'idmerek=' + encodeURIComponent(idMerek)
+        });
+        const result = await response.json();
+        return result;
+    } catch(error) {
+        console.error('Error deleting brand: ', error);
+        return { success: false };
+    }
+}
+
+export async function getAllTypes() {
+    try {
+        const response = await fetch('http://localhost/automotive_api_php/public/crud/getJenis');
+        const result = await response.json();
+        return result.data.map(j => ({
+            value: j.idjenis,
+            label: j.namajenis
+        }));
+    } catch(error) {
+        console.error('Error fetching type list: ', error);
+        return [];
     }
 }
