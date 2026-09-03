@@ -94,6 +94,15 @@
             </div>
 
             <div>
+                <label for="alphabetSort">Sort</label>
+                <select id="alphabetSort">
+                    <option value="">Default</option>
+                    <option value="ascending">A-Z sort</option>
+                    <option value="descending">Z-A sort</option>
+                </select>
+            </div>
+
+            <div>
                 <button id="clearBtn" title="Clear All Filters" class="clearBtn">
                 X
                 </button>
@@ -108,9 +117,9 @@
                         <div style="width: 200px;">
                             <h3><?= $carList['nama_mobil']; ?></h3>
                             <p><b>Brand: </b> <?= $carList['merek'] ?? 'Not Specified' ?></p>
-                            <!-- <p><b>Brand: </b> ${brandDisplay}</p> -->
+                            <!-- 'merek' didapat dari Home_model::getAllCars() saat left join -->
                             <p><b>Type: </b> <?= $carList['jenis'] ?? 'Not Specified' ?></p>
-                            <!-- <p><b>Type: </b> ${typeDisplay}</p> -->
+                            <!-- 'jenis' didapat dari Home_model::getAllCars() saat left join -->
                             <p><b>Horse Power: </b> <?= $carList['horse_power'] ?? 'N/A' ?></p>
                             <!-- <p><b>Horse Power: </b> ${car.horse_power ?? 'N/A'}</p> -->
                             <p><b>Status: </b><br>
