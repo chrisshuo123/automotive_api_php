@@ -1,4 +1,4 @@
-import { getAllCars } from './script.js';
+import { getAllCars, deleteCar } from './script.js';
 
 const carListEl = document.getElementById('carList');
 const searchInput = document.getElementById('searchInput');
