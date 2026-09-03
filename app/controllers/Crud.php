@@ -25,12 +25,29 @@ class Crud extends Controller {
         // echo "insert car berhasil ditampilkan";
         // die(); // Hentikan eksekusi
         if($_SERVER['REQUEST_METHOD'] === 'POST') {
+            // Untuk upload files/photo:
+            $namaFoto = '';
+
+            // Handle file upload kalau ada
+            if (isset($_FILES['image']) && $_FILES['image']['error'] === UPLOAD_ERR_OK) {
+                $uploadDir = __DIR__ . '/../../public/img/';  // sesuaikan path relatif dari lokasi controller
+                $ext = pathinfo($_FILES['image']['name'], PATHINFO_EXTENSION);
+                $namaFoto = uniqid('car_') . '.' . $ext; // Nama file unik, hindari bentrok nama sama
+                $targetPath = $uploadDir . $namaFoto;
+
+                if(!move_uploaded_file($_FILES['image']['tmp_name'], $targetPath)) {
+                    header('Content-Type: application/json');
+                    echo json_encode(['success' => false, 'message' => 'Gagal Upload Foto']);
+                    exit;
+                }
+            };
+
             $data = [
                 'nama_mobil' => $_POST['nama_mobil'] ?? '',
                 'idMerek_fk' => $_POST['idMerek_fk'] ?? null,
                 'idJenis_fk' => $_POST['idJenis_fk'] ?? null,
                 'horse_power' => $_POST['horse_power'] ?? 0,
-                'nama_foto' => $_POST['nama_foto'] ?? '',
+                'nama_foto' => $namaFoto,
                 'idStatus_fk' => $_POST['idStatus_fk'] ?? 1
             ];
 
