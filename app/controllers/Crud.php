@@ -79,9 +79,20 @@ class Crud extends Controller {
     public function deleteCar() {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $idCars = $_POST['idcars'] ?? 0;
+            // Ambil dulu data mobilnya, buat menangkap nama_foto
+            $car = $this->model('Home_model')->getCarById($idCars);
+
+            // Hapus row dari database
             $result = $this->model('Home_model')->deleteCar($idCars);
-            // var_dump($result);
-            // die();
+            
+            // Kalau delete DB sukses DAN ada nama_foto, hapus file fisiknya
+            if($result && $car && !empty($car['nama_foto'])) {
+                $filePath = __DIR__ . '/../../public/img/' . $car['nama_foto'];
+                if(file_exists($filePath)) {
+                    unlink($filePath);
+                }
+            }
+
             header('Content-Type: application/json');
             echo json_encode(['success' => $result]);
         }
