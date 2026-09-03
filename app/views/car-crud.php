@@ -6,6 +6,7 @@
     <meta name="robots" content="noindex">
     <meta name="twitter:widgets:autoload" content="off">
     <link rel="stylesheet" href="../public/css/style-crud.css">
+    <!-- <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"> -->
     <title>Car CRUD Editor</title>
 </head>
 <body>
@@ -65,8 +66,12 @@
 
             <button type="submit">Submit</button>
         </form>
-        <button type="button" class="second-button" style="margin-top: 10px;">Add Brand</button>
-        <button type="button" class="second-button">Add Type</button>
+        <button type="button" class="second-button" style="margin-top: 10px;" data-modal="addBrand">Add Brand</button>
+        <button type="button" class="second-button" data-modal="addType">Add Type</button>
+        <button type="button" class="second-button" data-modal="editBrand">Edit Brand</button>
+        <button type="button" class="second-button" data-modal="editType">Edit Type</button>
+        <button type="button" class="second-button" data-modal="deleteBrand">Delete Brand</button>
+        <button type="button" class="second-button" data-modal="deleteType">Delete Type</button>
 
         <div id="message" class="message"></div>
 
@@ -138,52 +143,6 @@
         </div> -->
     </div>
 
-    <div id="editModal" class="modal" style="display:none;">
-        <div class="modal-content">
-            <span class="close-modal">&times;</span>
-            <h2>Edit Car</h2>
-            <form id="editCarForm">
-                <input type="hidden" id="edit_id">
-
-                <label>Car Name:</label>
-                <input type="text" id="edit_nama_mobil" required>
-
-                <label>Brand:</label>
-                <select id="edit_merek" name="merek" required>
-                    <option value="">Select a brand</option>
-                    <!-- Populated by fetchBrands() -->
-                </select>
-
-                <!--<select id="merek" name="merek" required>
-                    <option value="">Select a brand</option>
-                    <option value="1">Toyota</option>
-                    <!-- Options will be populated by JavaScript -->
-                <!--</select>-->
-
-                <label>Type:</label>
-                <select id="edit_jenis" name="jenis" required>
-                    <option value="">Select a Type</option>
-                    <!-- Populated by fetchTypes() -->
-                </select>
-
-                <label>Horse Power:</label>
-                <input type="number" id="edit_horse_power" required>
-
-                <label>Status:</label>
-                <select id="edit_status" name="status" required>
-                    <option value="">Select a Status</option>
-                    <!-- Populated by fetchStatus() -->
-                </select>
-
-                <label>Image:</label>
-                <input type="file" id="edit_image_car" name="image" accept="image/*">
-                <!-- accept="../public/img/*" -->
-
-                <button type="submit">Update</button>
-            </form>
-        </div>
-    </div>
-
     <div id="universalModal" class="modal" style="display:none">
         <div class="modal-content">
             <span class="close-modal">&times;</span>
@@ -200,9 +159,11 @@
         </div>
     </div>
 
-    <script type="module" src="http://localhost/automotive_api_php/public/js/script.js">
-        console.log('BASEURL:', '<?= BASEURL ?>');
-    </script>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <!-- <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script> -->
+    <script type="module" src="http://localhost/automotive_api_php/public/js/script.js"></script>
     <script type="module" src="http://localhost/automotive_api_php/public/js/filter.js"></script>
+    <script type="module" src="http://localhost/automotive_api_php/public/js/modalEdit.js"></script>
+    <script type="module" src="http://localhost/automotive_api_php/public/js/modal.js"></script>
 </body>
 </html>
