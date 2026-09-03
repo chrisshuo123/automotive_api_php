@@ -3,6 +3,7 @@ import { getAllCars, deleteCar } from './script.js';
 const carListEl = document.getElementById('carList');
 const searchInput = document.getElementById('searchInput');
 const statusFilter = document.getElementById('statusFilter');
+const sortSelect = document.getElementById('alphabetSort');
 const clearBtn = document.getElementById("clearBtn");
 
 let allCars = [];  // Populated once on load, then filtered in memory
@@ -17,8 +18,8 @@ function renderCarItem(car) {
             <div class="flex-crud">
                 <div style="width: 200px;">
                     <h3>${car.nama_mobil}</h3>
-                    <p><b>Brand: </b>${car.namaMerek ?? 'Not Specified'}</p>
-                    <p><b>Type: </b>${car.namaJenis ?? 'Not Specified'}</p>
+                    <p><b>Brand: </b>${car.merek ?? 'Not Specified'}</p>
+                    <p><b>Type: </b>${car.jenis ?? 'Not Specified'}</p>
                     <p><b>Horse Power: </b>${car.horse_power ?? 'N/A'}</p>
                     <p><b>Status: </b><br>
                         <span style="background-color: ${bgColor}; color: ${textColor}; padding: 5px; border-radius: 5px;">
@@ -50,8 +51,11 @@ function renderTable(data) {
 function filterData() {
     const searchTerm = searchInput.value.toLowerCase().trim();
     const statusValue = statusFilter.value;
+    const sortValue = sortSelect.value;
 
-    if(searchTerm === '' && (statusValue === '' || statusValue === 'all')) {
+    console.log('sortValue: ', sortValue);
+
+    if(searchTerm === '' && (statusValue === '' || statusValue === 'all') && (sortValue === '')) {
         renderTable(allCars);
         return;
     }
@@ -60,15 +64,30 @@ function filterData() {
         const nameLower = car.nama_mobil.toLowerCase();
         const statusLower = (car.status ?? '').toLowerCase();
 
+        // Search Filterring
         const matchesSearch = searchTerm === '' ||
             nameLower.includes(searchTerm) ||
             statusLower.includes(searchTerm);
 
+        // Status Filterring
         const matchesStatus = statusValue === '' || statusValue === 'all' ||
             statusLower === statusValue.toLowerCase();
 
         return matchesSearch && matchesStatus;
     });
+
+    console.log('sebelum sort, filtered[0]: ', filtered[0]?.nama_mobil);
+
+    // Sort A-Z / Z-A
+    if(sortValue === 'ascending') {
+        console.log('menjalankan sort ascending');
+        filtered.sort((a,b) => a.nama_mobil.localeCompare(b.nama_mobil));
+    } else if(sortValue === 'descending') {
+        console.log('menjalankan sort descending');
+        filtered.sort((a,b) => b.nama_mobil.localeCompare(a.nama_mobil));
+    }
+
+    console.log('setelah sort, filtered[0]: ', filtered[0]?.nama_mobil);
 
     renderTable(filtered);
 }
@@ -83,9 +102,14 @@ carListEl.addEventListener('click', (e) => {
 
 searchInput.addEventListener('input', filterData);
 statusFilter.addEventListener('change', filterData);
+sortSelect.addEventListener('change', filterData);
+
 clearBtn.addEventListener('click', () => {
     searchInput.value = '';
     statusFilter.value = '';
+    sortSelect.value = '';
+    
+    // Initial Render
     renderTable(allCars);
 });
 
@@ -93,5 +117,5 @@ clearBtn.addEventListener('click', () => {
 // 'allCars' in memory so filtering doesn't need a new fetch every time
 (async function init() {
     allCars = await getAllCars();
-    console.log('allCars: ', allCars); // cek bentuknya di sini dulu
+    console.log('allCars[0]: ', allCars[0]); // cek bentuknya di sini dulu
 })();
