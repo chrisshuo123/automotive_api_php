@@ -217,6 +217,10 @@ class Database {
         $placeholders = ':' . implode(', :', array_keys($data));
 
         $sql = "INSERT INTO {$table} ({$columns}) VALUES ({$placeholders}) RETURNING {$pk}";
+
+        var_dump($sql);   // ← muncul di network -> response
+        var_dump($data);  // ← muncul di network -> response
+
         $this->query($sql);
 
         foreach($data as $key => $value) {
@@ -254,7 +258,7 @@ class Database {
         $this->query($sql);
 
         foreach($data as $key => $value) {
-            $this->bind(':{$key}', $value);
+            $this->bind(":{$key}", $value);
         }
         $this->bind(':id', $id);
         
