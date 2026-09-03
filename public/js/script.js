@@ -8,12 +8,16 @@ document.addEventListener('DOMContentLoaded', function() {
             console.log('BASEURL: ', BASEURL);
             
             const formData = new FormData(this);
-            const data = Object.fromEntries(formData);
+            // const data = Object.fromEntries(formData); // Bikin upload_foto 
 
+            /** NOTE ttg x-www-form-urlencoded:
+             * Format seperti diatas ini tidak bisa membawa file binary — cuma teks. Buat fungsi upload file/photo, maka perlu dikomen.
+             * Juga, nama_foto tidak akan pernah muncul di $_POST karena filenya ada di $_FILES, bukan $_POST
+             */
             fetch(BASEURL + '/crud/insertCar', {
                 method: 'POST',
-                headers: {'Content-Type': 'application/x-www-form-urlencoded'},
-                body: new URLSearchParams(data)
+                // headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+                body: formData // Tanpa headers Content-Type manual.
             })
             .then(response => response.text())
             .then(text => {
