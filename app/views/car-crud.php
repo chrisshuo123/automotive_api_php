@@ -138,7 +138,7 @@
                         </div>
                         <div>
                             <!-- <img src="../public/img/yaris.jpg" style="width: 75%; max-width: 800px; height: auto; margin-left: 150px;"> -->
-                            <img src="../public/img/<?= $carList['imageCar'] ?? 'default.jpg' ?>" style="width: 75%; max-width: 800px; height: auto; margin-left: 150px;">
+                            <img src="<?= BASEURL ?>/img/<?= $carList['nama_foto'] ?? 'default.jpg' ?>" style="width: 75%; max-width: 800px; height: auto; margin-left: 150px;">
                         </div>
                     </div>
                 </div>
