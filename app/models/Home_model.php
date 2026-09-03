@@ -27,6 +27,18 @@ class Home_model {
     public function getAllMerek() {
         return $this->db->all('automotive_api.merek', 'idmerek ASC');
     }
+    
+    public function insertMerek($data) {
+        return $this->db->insert('automotive_api.merek', $data, 'idmerek');
+    }
+
+    public function updateMerek($idMerek, $data) {
+        return $this->db->update('automotive_api.merek', $data, $idMerek, 'idmerek');
+    }
+
+    public function deleteMerek($idMerek) {
+        return $this->db->delete('automotive_api.merek', $idMerek, 'idmerek');
+    }
 
     public function getAllJenis() {
         return $this->db->all('automotive_api.jenis', 'idjenis ASC');
@@ -40,7 +52,7 @@ class Home_model {
         return $this->db->insert('automotive_api.cars', $data, 'idcars');
     }
 
-    public function updateCar($idCars) {
+    public function updateCar($idCars, $data) {
         return $this->db->update('automotive_api.cars', $data, $idCars, 'idcars');
     }
 
