@@ -27,7 +27,15 @@ function renderCarItem(car) {
                         </span>
                     </p>
                     <div class="flex-crud-button">
-                        <button class="edit-btn" data-id="${car.idcars}">Edit</button>
+                        <button class="edit-btn" data-modal="editCar"
+                            data-idcars="<?= $carList['idcars'] ?>"
+                            data-carname="<?= $carList['nama_mobil'] ?>"
+                            data-carbrand="<?= $carList['idmerek_fk'] ?>"
+                            data-cartype="<?= $carList['idjenis_fk'] ?>"
+                            data-carhorsepower="<?= $carList['horse_power'] ?>"
+                            data-carstatus="<?= $carList['idstatus_fk'] ?>">
+                            Edit
+                        </button>
                         <button class="delete-btn" data-id="${car.idcars}">Delete</button>
                     </div>
                 </div>
@@ -38,6 +46,7 @@ function renderCarItem(car) {
             </div>
         </div>
     `;
+    // NOTE: The 'Edit Car' Button now adjusts according to the car-crud.php's edit car button, by adding more data-id, called from modalEdit.js on editCar modalConfigs var.
 }
 
 function renderTable(data) {
@@ -94,9 +103,9 @@ function filterData() {
 
 // Event Delegation for edit / delete, since rows are re-rendered dynamically
 carListEl.addEventListener('click', (e) => {
-    const editBtn = e.target.closest('.edit-btn');
+    // const editBtn = e.target.closest('.edit-btn');  // editBtn sepenuhnya di script.js & modalEdit.js
     const delBtn = e.target.closest('.delete-btn');
-    if (editBtn) editCar(editBtn.dataset.id);
+    // if (editBtn) editCar(editBtn.dataset.id);
     if (delBtn) deleteCar(delBtn.dataset.id);
 });
 
