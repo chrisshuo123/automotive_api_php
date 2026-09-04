@@ -132,7 +132,15 @@
                             <!-- <p><b>Status: </b><br><span style="background-color:${statusColor}; color: ${statusColor === 'yellow' ? 'black' : 'white'}; padding: 5px; border-radius: 5px;">${statusDisplay}</span></p> -->
                             <!-- This is for Edit Button in Panel Update Menu -->
                             <div class="flex-crud-button">
-                                <button class="edit-btn" data-id="<?= $carList['idcars'] ?>" onClick="editCar(<?= $carList['idcars'] ?>)" data-modal="editCar">Edit</button>
+                                <button class="edit-btn" data-modal="editCar"
+                                    data-idcars="<?= $carList['idcars'] ?>"
+                                    data-carname="<?= $carList['nama_mobil'] ?>"
+                                    data-carbrand="<?= $carList['idmerek_fk'] ?>"
+                                    data-cartype="<?= $carList['idjenis_fk'] ?>"
+                                    data-carhorsepower="<?= $carList['horse_power'] ?>"
+                                    data-carstatus="<?= $carList['idstatus_fk'] ?>">
+                                    Edit
+                                </button>
                                 <button class="delete-btn" data-id="<?= $carList['idcars'] ?>" onClick="deleteCar(<?= $carList['idcars'] ?>)">Delete</button>
                             </div>
                         </div>
