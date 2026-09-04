@@ -35,7 +35,36 @@ document.addEventListener('DOMContentLoaded', function() {
             .catch(error => console.error('Error: ', error));
         });
     }
+
+    const editForm = document.getElementById('editCarForm');
+    if(editForm) {
+        editForm.addEventListener('submit', async function(e) {
+            e.preventDefault();
+            const formData = new FormData(this);
+
+            const result = await editCars(formData);
+            if(result.success) {
+                location.reload();
+            } else {
+                alert('Gagal mengubah mobil!');
+            }
+        });
+    }
 });
+
+export async function editCar(formData) {
+    try {
+        const response = await fetch('http://localhost/automotive_api_php/public/crud/updateCar', {
+            method: 'POST',
+            body: formData  // FormData langsung, tanpa Content-Type manual (browser set otomatis + boundary)
+        });
+        const result = await response.json();
+        return result;
+    } catch(error) {
+        console.error('Error editing car: ', error);
+        return { success: false };
+    }
+}
 
 // For Loading All List of Cars Row Data
 export async function getAllCars() {
@@ -152,6 +181,20 @@ export async function getAllTypes() {
         }));
     } catch(error) {
         console.error('Error fetching type list: ', error);
+        return [];
+    }
+}
+
+export async function getAllStatuses() {
+    try {
+        const response = await fetch('http://localhost/automotive_api_php/public/crud/getStatuses');
+        const result = await response.json();
+        return result.data.map(s => ({
+            value: s.idstatus,
+            label: s.namastatus
+        }));
+    } catch(error) {
+        console.error('Error fetching status list: ', error);
         return [];
     }
 }
