@@ -68,7 +68,7 @@ class Crud extends Controller {
             $namaFoto = $car['nama_foto'] ?? ''; // Default: pertahankan foto lama
 
             // Kalau user upload foto baru, proses upload dan timpa $namaFoto
-            if($isset($_FILES['image']) && $_FILES['image']['error'] === UPLOAD_ERR_OK) {
+            if(isset($_FILES['image']) && $_FILES['image']['error'] === UPLOAD_ERR_OK) {
                 $uploadDir = __DIR__ . '/../../public/img/';
                 $ext = pathinfo($_FILES['image']['name'], PATHINFO_EXTENSION);
                 $namaFotoBaru = uniqid('car_') . '.' . $ext;
