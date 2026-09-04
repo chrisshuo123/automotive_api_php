@@ -44,6 +44,10 @@ class Home_model {
         return $this->db->all('automotive_api.jenis', 'idjenis ASC');
     }
 
+    public function getAllStatuses() {
+        return $this->db->all('automotive_api.status', 'idstatus ASC');
+    }
+
     public function getCarById($idCars) {
         return $this->db->find('automotive_api.cars', $idCars, 'idcars');
     }
