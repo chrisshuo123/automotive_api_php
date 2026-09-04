@@ -218,8 +218,8 @@ class Database {
 
         $sql = "INSERT INTO {$table} ({$columns}) VALUES ({$placeholders}) RETURNING {$pk}";
 
-        var_dump($sql);   // ← muncul di network -> response
-        var_dump($data);  // ← muncul di network -> response
+        //var_dump($sql);   // ← muncul di network -> response
+        //var_dump($data);  // ← muncul di network -> response
 
         $this->query($sql);
 
