@@ -125,14 +125,14 @@ class Crud extends Controller {
         }
     }
 
-    public function getBrands() {
+    public function getMerek() {   // Merek (IND) <-> Brand (ENG)
         header('Content-Type: application/json');
         $idBrand = $this->model('Home_model')->getAllMerek();
         echo json_encode(['success' => true, 'data' => $idBrand]);
         exit;
     }
 
-    public function addMerek() {
+    public function addMerek() {  // Merek (IND) <-> Brand (ENG)
         $namaMerek = $_POST['namamerek'] ?? '';
         $addMerek = $this->model('Home_model')->insertMerek(['namamerek' => $namaMerek]) ?: false;
 
@@ -144,7 +144,7 @@ class Crud extends Controller {
         }
     }
 
-    public function editMerek() {
+    public function editMerek() {  // Merek (IND) <-> Brand (ENG)
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $idMerek = $_POST['idmerek'] ?? 0;
             $namaMerek = $_POST['namamerek'] ?? "";
@@ -155,7 +155,7 @@ class Crud extends Controller {
         }
     }
 
-    public function deleteMerek() {
+    public function deleteMerek() {  // Merek (IND) <-> Brand (ENG)
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $idMerek = $_POST['idmerek'] ?? 0;
             
@@ -166,7 +166,7 @@ class Crud extends Controller {
         }
     }
 
-    public function getTypes() {
+    public function getJenis() {  // Jenis (IND) <-> Type (ENG)
         header('Content-Type: application/json');
         $cars = $this->model('Home_model')->getAllJenis();
         echo json_encode(['success' => true, 'data' => $cars]);
