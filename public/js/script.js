@@ -42,7 +42,7 @@ document.addEventListener('DOMContentLoaded', function() {
             e.preventDefault();
             const formData = new FormData(this);
 
-            const result = await editCars(formData);
+            const result = await editCar(formData);
             if(result.success) {
                 location.reload();
             } else {
