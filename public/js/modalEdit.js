@@ -1,13 +1,15 @@
-import { getAllBrands, getAllTypes, insertBrand, editBrand, deleteBrand } from './script.js';
+import { getAllBrands, getAllTypes, getAllStatuses, insertBrand, editBrand, deleteBrand, editCar } from './script.js';
 
 $(function() {
     let brandList = [];
     let typeList = [];
+    let statusList = [];
 
     // Ambil data sekali di awal, simpan ke variabel lokal
     async function initModalData() {
         brandList = await getAllBrands();
         typeList = await getAllTypes();
+        statusList = await getAllStatuses();
     }
     initModalData();
 
@@ -17,6 +19,9 @@ $(function() {
     }
     function fetchTypes() {
         return Promise.resolve(typeList);
+    }
+    function fetchStatuses() {
+        return Promise.resolve(statusList);
     }
 
     // Config per modal type
@@ -108,6 +113,42 @@ $(function() {
                     }
                 }
             }
+        },
+        editCar: {
+            title: "Edit Car",
+            fields: [
+                { id: "idcars", label: "", type: "hidden" },
+                { id: "carname", label: "Car Name", type: "text", required: true },
+                { id: "carbrand", label: "Car Brand", type: "select", required: true, source: fetchBrands },
+                { id: "cartype", label: "Car Type", type: "select", required: true, source: fetchTypes },
+                { id: "carhorsepower", label: "Car Horse Power", type: "text", required: true },
+                { id: "carimage", label: "Change Photo (optional)", type: "file" },
+                { id: "carstatus", label: "Car Status", type: "select", required: true, source: fetchStatuses }
+            ],
+            onSubmit: async (data, formEl) => {
+                if(confirm('Update this Car changes?')) {
+                    const formData = new FormData();
+                    formData.append('idcars', data.idcars);
+                    formData.append('nama_mobil', data.carname);
+                    formData.append('idMerek_fk', data.carbrand);
+                    formData.append('idJenis_fk', data.cartype);
+                    formData.append('horse_power', data.carhorsepower);
+                    formData.append('idStatus_fk', data.carstatus);
+
+                    // Ambil file langsung dari input, bukan dari $(field).val() (yang cuma return nama file sbg string)
+                    const fileInput = document.getElementById('field_carimage');
+                    if(fileInput && fileInput.files.length > 0) {
+                        formData.append('image', fileInput.files[0]); // mengirim fileInput ke key image, yang di controller updateCar() dibaca lewat $_FILES['image'], diproses move_uploaded_file(), lalu nama file barunya ($namaFotoBaru) itulah yang masuk ke kolom nama_foto.
+                    }
+
+                    const result = await editCar(formData);
+                    if(result.success) {
+                        location.reload();
+                    } else {
+                        alert('Gagal mengubah mobil.');
+                    }
+                }
+            }
         }
     }
 
@@ -150,6 +191,8 @@ $(function() {
                         if (data[field.id]) $input.val(data[field.id]);
                     }).catch(err => console.error("field.source() gagal: ", err));  // tangkap kalau promisenya reject.
                 }
+            } else if(field.type === 'file') {
+                $input = $(`<input type="file" id="field_${field.id}" name="${field.id}" accept="image/*">`);
             } else if (field.type === 'hidden') {
                 $input = $(`<input type="hidden" id="field_${field.id}" value="${data[field.id] ?? ""}">`);
             } else {
