@@ -1,4 +1,4 @@
-import { getAllCars, deleteCar } from './script.js';
+import { BASEURL, getAllCars, deleteCar } from './script.js';
 
 const carListEl = document.getElementById('carList');
 const searchInput = document.getElementById('searchInput');
@@ -28,19 +28,19 @@ function renderCarItem(car) {
                     </p>
                     <div class="flex-crud-button">
                         <button class="edit-btn" data-modal="editCar"
-                            data-idcars="<?= $carList['idcars'] ?>"
-                            data-carname="<?= $carList['nama_mobil'] ?>"
-                            data-carbrand="<?= $carList['idmerek_fk'] ?>"
-                            data-cartype="<?= $carList['idjenis_fk'] ?>"
-                            data-carhorsepower="<?= $carList['horse_power'] ?>"
-                            data-carstatus="<?= $carList['idstatus_fk'] ?>">
+                            data-idcars="${car.idcars}"
+                            data-carname="${car.nama_mobil}"
+                            data-carbrand="${car.idmerek_fk}"
+                            data-cartype="${car.idjenis_fk}"
+                            data-carhorsepower="${car.horse_power}"
+                            data-carstatus="${car.idstatus_fk}">
                             Edit
                         </button>
                         <button class="delete-btn" data-id="${car.idcars}">Delete</button>
                     </div>
                 </div>
                 <div>
-                    <img src="../public/img/${car.imageCar ?? 'default.jpg'}"
+                    <img src="${BASEURL}/img/${car.nama_foto ?? 'default.jpg'}"
                         style="width: 75%; max-width: 800px; height: auto; margin-left: 150px;">
                 </div>
             </div>
@@ -126,5 +126,6 @@ clearBtn.addEventListener('click', () => {
 // 'allCars' in memory so filtering doesn't need a new fetch every time
 (async function init() {
     allCars = await getAllCars();
+    renderTable(allCars);
     console.log('allCars[0]: ', allCars[0]); // cek bentuknya di sini dulu
 })();
