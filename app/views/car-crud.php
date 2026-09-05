@@ -110,50 +110,7 @@
         </div>
 
         <div id="carList">
-            <?php if(isset($data['carList']) && !empty($data['carList'])): ?>
-                <?php foreach($data['carList'] as $carList): ?>
-                <div class="car-item">
-                    <div class="flex-crud">
-                        <div style="width: 200px;">
-                            <h3><?= $carList['nama_mobil']; ?></h3>
-                            <p><b>Brand: </b> <?= $carList['merek'] ?? 'Not Specified' ?></p>
-                            <!-- 'merek' didapat dari Home_model::getAllCars() saat left join -->
-                            <p><b>Type: </b> <?= $carList['jenis'] ?? 'Not Specified' ?></p>
-                            <!-- 'jenis' didapat dari Home_model::getAllCars() saat left join -->
-                            <p><b>Horse Power: </b> <?= $carList['horse_power'] ?? 'N/A' ?></p>
-                            <!-- <p><b>Horse Power: </b> ${car.horse_power ?? 'N/A'}</p> -->
-                            <p><b>Status: </b><br>
-                                <span style="background-color: <?= ($carList['status'] ?? '') == 'Approved' ? 'green' : 'yellow' ?> ;
-                                color: <?= ($carList['status'] ?? '') == 'Approved' ? 'white' : 'black' ?>;
-                                padding: 5px; border-radius: 5px;">
-                                    <?= $carList['status'] ?? 'Not Specified' ?>
-                                </span>
-                            </p>
-                            <!-- <p><b>Status: </b><br><span style="background-color:${statusColor}; color: ${statusColor === 'yellow' ? 'black' : 'white'}; padding: 5px; border-radius: 5px;">${statusDisplay}</span></p> -->
-                            <!-- This is for Edit Button in Panel Update Menu -->
-                            <div class="flex-crud-button">
-                                <button class="edit-btn" data-modal="editCar"
-                                    data-idcars="<?= $carList['idcars'] ?>"
-                                    data-carname="<?= $carList['nama_mobil'] ?>"
-                                    data-carbrand="<?= $carList['idmerek_fk'] ?>"
-                                    data-cartype="<?= $carList['idjenis_fk'] ?>"
-                                    data-carhorsepower="<?= $carList['horse_power'] ?>"
-                                    data-carstatus="<?= $carList['idstatus_fk'] ?>">
-                                    Edit
-                                </button>
-                                <button class="delete-btn" data-id="<?= $carList['idcars'] ?>" onClick="deleteCar(<?= $carList['idcars'] ?>)">Delete</button>
-                            </div>
-                        </div>
-                        <div>
-                            <!-- <img src="../public/img/yaris.jpg" style="width: 75%; max-width: 800px; height: auto; margin-left: 150px;"> -->
-                            <img src="<?= BASEURL ?>/img/<?= $carList['nama_foto'] ?? 'default.jpg' ?>" style="width: 75%; max-width: 800px; height: auto; margin-left: 150px;">
-                        </div>
-                    </div>
-                </div>
-                <?php endforeach; ?>
-            <?php else: ?>
-                <p>No cars found.</p>
-            <?php endif; ?>
+            <!-- Rendered via JavaScript -->
         </div>
         <!-- <div id="noResults" style="display:none;">
             <div>No Results Found</div>
