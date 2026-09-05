@@ -1,3 +1,6 @@
+// BASEURL
+export const BASEURL = 'http://localhost/automotive_api_php/public';
+
 // Insert Car Form
 document.addEventListener('DOMContentLoaded', function() {
     const form = document.getElementById('insertCarForm');
