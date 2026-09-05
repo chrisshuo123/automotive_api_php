@@ -226,9 +226,12 @@ $(function() {
     }
 
     // Wire up the triggers
-    $("[data-modal]").on("click", function () {
+    $(document).on("click", "[data-modal]", function () {
+        console.log("data-modal button clicked key: ", $(this).
+           data("modal"));  // cek listener ke trigger tidak
         const key = $(this).data("modal");  // pulls all data-* attrs, e.g. data-id, data-nama.  Dalam case ini adalah data-modal.
         const data = $(this).data();
+        console.log("Data terkirim ke openModal: ", data);  // Cek isi data-nya lengkap tidak
         openModal(key, data);
     });
 });
