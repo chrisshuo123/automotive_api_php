@@ -9,6 +9,15 @@ class Crud extends Controller {
         $this->view('car-crud', $data);
     }
 
+    public function insert() {
+        $data['judul'] = "Insert Car User Panel";
+        $data['carList'] = $this->model('Home_model')->getAllCars() ?: []; // Pastikan array kosong kalau null
+        $data['merekList'] = $this->model('Home_model')->getAllMerek() ?: []; // Pastikan array kosong kalau null
+        $data['jenisList'] = $this->model('Home_model')->getAllJenis() ?: []; // Pastikan array kosong kalau null
+        echo 'insert page (user panel)';
+        $this->view('insert', $data);
+    }
+
     public function test() {
         echo "Test method works!";
         // console.log("Test method works!");
