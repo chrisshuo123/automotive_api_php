@@ -10,8 +10,29 @@
 <body>
     <div class="container">
         <h1>Car Inventory</h1>
+        <!-- Search Box -->
         <input type="text" id="searchInput" placeholder="Search by car title...">
         <button id="searchBtn">Search</button>
+        <!-- Alphabet Sorting -->
+        <select id="sortSelect">
+            <option value="">Default</option>
+            <option value="ascending">A-Z sort</option>
+            <option value="descending">Z-A sort</option>
+        </select>
+        <!-- Brand Filter -->
+        <div class="filter-box">
+            <label for="brandFilter">Brand:</label>
+            <select id="brandFilter">
+                <option value="">All Brand</option>
+            </select>
+        </div>
+        <!-- Type Filter -->
+        <div class="filter-box">
+            <label for="typeFilter">Brand:</label>
+            <select id="typeFilter">
+                <option value="">All Brand</option>
+            </select>
+        </div>
         <div class="car-list" id="carList">
             <!-- Cars will be loaded here by JavaScript -->
             <div class="loading"><p>Loading cars...</p></div>
