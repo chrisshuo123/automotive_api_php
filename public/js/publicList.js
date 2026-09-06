@@ -1,6 +1,10 @@
 import { getAllCars, BASEURL } from './script.js';
 
 const carListEl = document.getElementById('carList');
+const searchInput = document.getElementById('searchInput');
+const searchBtn = document.getElementById('searchBtn');
+
+let allCars = [];  // Populated once on load, then filtered in memory
 
 function renderCarCard(car) {
     return `
@@ -16,14 +20,53 @@ function renderCarCard(car) {
     `;
 }
 
-(async function init() {
-    const allCars = await getAllCars();
-    const approvedCars = allCars.filter(car => car.status === 'Approved');
+function renderTable(data) {
+    if (!data || data.length === 0) {
+        carListEl.innerHTML = '<div class="no-cars">No approved cars found.</div>';
+        return;
+    }
+    carListEl.innerHTML = data.map(renderCarCard).join('');
+}
 
-    if(approvedCars.length === 0) {
-        carListEl.innerHTML = `<div class="no-cars">No approved cars found.</div>`;
+function filterData() {
+    const searchTerm = searchInput.value.toLowerCase().trim();
+
+    if(searchTerm === '') {
+        renderTable(allCars);
         return;
     }
 
-    carListEl.innerHTML = approvedCars.map(renderCarCard).join('');
+    const filtered = allCars.filter((car) => {
+        const nameLower = car.nama_mobil.toLowerCase();
+
+        // Search filterring
+        const matchesSearch = searchTerm === '' ||
+                nameLower.includes(searchTerm);
+
+        return matchesSearch;
+    });
+
+    console.log('sebelum sort, filtered[0]: ', filtered[0]?.nama_mobil);
+
+    renderTable(filtered);
+}
+
+searchBtn.addEventListener('click', filterData);
+searchInput.addEventListener('keypress', (e) => {
+    if (e.key === 'Enter') {
+        e.preventDefault();
+        filterData();
+    }
+});
+searchInput.addEventListener('keyup', (e) => {
+    if (e.key === 'Backspace' || e.key === 'Delete') {
+        filterData();
+    }
+});
+
+(async function init() {
+    const rawCars = await getAllCars();
+    allCars = rawCars.filter(car => car.status === 'Approved');  // <- simpan HASIL FILTER ke allCars
+
+    renderTable(allCars);
 })();
