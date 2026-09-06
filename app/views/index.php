@@ -10,6 +10,8 @@
 <body>
     <div class="container">
         <h1>Car Inventory</h1>
+        <input type="text" id="searchInput" placeholder="Search by car title...">
+        <button id="searchBtn">Search</button>
         <div class="car-list" id="carList">
             <!-- Cars will be loaded here by JavaScript -->
             <div class="loading"><p>Loading cars...</p></div>
