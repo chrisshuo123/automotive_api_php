@@ -15,64 +15,6 @@
             <div class="loading"><p>Loading cars...</p></div>
         </div>
     </div>
-    <script>
-        // Fetch Cars API Error
-        fetch('http://localhost:8000/automotive_api_php/api/cars')
-            .then(response => {
-                console.log("API Response:", response);
-                if(!response.ok) {
-                    throw new Error(`HTTP Error! Status: ${response.status}`);
-                }
-                // Verify content type is JSON
-                const contentType = response.headers.get('content-type');
-                if(!contentType || !contentType.includes('application/json')) {
-                    throw new TypeError("Response isn't JSON");
-                }
-                return response.json();
-            })
-            .then(data => {
-                const carList = document.getElementById("carList");
-
-                // Check if data exists and has the expected structure
-                if(!data || !data.data || !Array.isArray(data.data)) {
-                    throw new Error("Invalid data structure from API");
-                }
-
-                if(data.data.length === 0) { // changed cars.length to data.data.length. !data.data added.
-                    carList.innerHTML = '<div class="no-cars">No cars found in inventory.</div>';
-                    return;
-                }
-
-                // Filter: Hanya tampilkan cars dengan status "approved" (idStatus_fk = 2)
-                const approvedCars = data.data.filter(car => car.idStatus_fk === 2);
-
-                if(approvedCars.length === 0) {
-                    carList.innerHTML = '<div class="no-cars">No approved cars found.</div>'
-                    return;
-                }
-
-                carList.innerHTML = ''; // Clear Loading message
-                
-                approvedCars.forEach(car => { // Changed cars, to data.data
-                    const carCard = document.createElement('div');
-                    carCard.className = 'car-card';
-                    carCard.innerHTML = `
-                        <h2>${car.nama_mobil}</h2>
-                        <img src="../public/img/yaris.jpg" style="width: 100%; max-width: 800px; height: auto;">
-                        <div class="car-details">
-                            <p><b>Brand: </b>${car.merek?.merek || 'Not Specified'}</p>
-                            <p><b>Jenis: </b>${car.jenis?.jenis  || 'Not Specified'}</p>
-                            <p><b>Horse Power: </b>${car.horse_power  || 'N/A'} CC</p>
-                        </div>
-                    `; // revised merek.merek and jenis.jenis, by adding each with '?'
-                    carList.appendChild(carCard);
-                });
-            })
-            .catch(error => {
-                console.error("Full Error: ", error);
-                document.getElementById('carList').innerHTML = 
-                    `<div class="error">Error Loading Cars: ${error.message}</div>`;
-            });
-    </script>
+    <script type="module" src="http://localhost/automotive_api_php/public/js/publicList.js"></script>
 </body>
 </html>
