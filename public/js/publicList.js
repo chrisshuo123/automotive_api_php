@@ -1,8 +1,11 @@
-import { getAllCars, BASEURL } from './script.js';
+import { getAllCars, getAllBrands, getAllTypes, BASEURL } from './script.js';
 
 const carListEl = document.getElementById('carList');
 const searchInput = document.getElementById('searchInput');
 const searchBtn = document.getElementById('searchBtn');
+const sortSelect = document.getElementById('sortSelect');
+const brandFilter = document.getElementById('brandFilter');
+const typeFilter = document.getElementById('typeFilter');
 
 let allCars = [];  // Populated once on load, then filtered in memory
 
@@ -30,25 +33,64 @@ function renderTable(data) {
 
 function filterData() {
     const searchTerm = searchInput.value.toLowerCase().trim();
+    const sortValue = sortSelect.value;
+    const brandValue = brandFilter.value;
+    const typeValue = typeFilter.value;
 
-    if(searchTerm === '') {
-        renderTable(allCars);
-        return;
-    }
+    // Ini tidak perlu, karena sudah dipastikan oleh si elemen2 const searchInput diatas.
+    // if(searchTerm === '') {
+    //     renderTable(allCars);
+    //     return;
+    // }
 
     const filtered = allCars.filter((car) => {
         const nameLower = car.nama_mobil.toLowerCase();
+        const brandLower = (car.merek ?? '').toLowerCase();
+        const typeLower = (car.jenis ?? '').toLowerCase();
 
         // Search filterring
         const matchesSearch = searchTerm === '' ||
-                nameLower.includes(searchTerm);
+                nameLower.includes(searchTerm) ||
+                brandLower.includes(searchTerm) ||
+                typeLower.includes(searchTerm);
 
-        return matchesSearch;
+        // Brand Filterring
+        const matchesBrand = brandValue === '' || brandValue === 'all' ||
+            brandLower === brandValue.toLowerCase();
+        // Type Filterring
+        const matchesType = typeValue === '' || typeValue === 'all' ||
+            typeLower === typeValue.toLowerCase();
+
+        return matchesSearch && matchesBrand && matchesType;
     });
 
+    // Sort the filtered car data
     console.log('sebelum sort, filtered[0]: ', filtered[0]?.nama_mobil);
 
+    if(sortValue === 'ascending') {
+        console.log('menjalankan sort ascending');
+        filtered.sort((a,b) => a.nama_mobil.localeCompare(b.nama_mobil));
+    } else if(sortValue === 'descending') {
+        console.log('menjalankan sort descending');
+        filtered.sort((a,b) => b.nama_mobil.localeCompare(a.nama_mobil));
+    }
+
+    // Setelah Sort
+    console.log('setelah sort, filtered[0]: ', filtered[0]?.nama_mobil);
+
     renderTable(filtered);
+}
+
+async function populateBrandFilter() {
+    const brand = await getAllBrands();
+    brandFilter.innerHTML = `<option value="">All Brand</option>` +
+        brand.map(b => `<option value="${b.label}">${b.label}</option>`).join('');
+}
+
+async function populateTypeFilter() {
+    const jenis = await getAllTypes();
+    typeFilter.innerHTML = `<option value="">All Type</option>` +
+        jenis.map(j => `<option value="${j.label}">${j.label}</option>`).join('');
 }
 
 searchBtn.addEventListener('click', filterData);
@@ -64,9 +106,16 @@ searchInput.addEventListener('keyup', (e) => {
     }
 });
 
+// Sertakan Listener
+sortSelect.addEventListener('change', filterData);
+brandFilter.addEventListener('change', filterData);
+typeFilter.addEventListener('change', filterData);
+
 (async function init() {
     const rawCars = await getAllCars();
     allCars = rawCars.filter(car => car.status === 'Approved');  // <- simpan HASIL FILTER ke allCars
 
+    await populateBrandFilter();
+    await populateTypeFilter();
     renderTable(allCars);
 })();
