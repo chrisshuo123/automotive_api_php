@@ -1,5 +1,12 @@
 <?php
 class Crud extends Controller {
+    public function __construct() {
+        if (!isset($_SESSION['user_id'])) {
+            header('Location: ' . BASEURL . '/auth/login');
+            exit;
+        }
+    }
+
     public function index() {
         $data['judul'] = "Car CRUD Panel";
         $data['carList'] = $this->model('Home_model')->getAllCars() ?: []; // Pastikan array kosong kalau null
