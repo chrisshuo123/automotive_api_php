@@ -23,14 +23,14 @@
         <div class="filter-box">
             <label for="brandFilter">Brand:</label>
             <select id="brandFilter">
-                <option value="">All Brand</option>
+                <option value="">All Brands</option>
             </select>
         </div>
         <!-- Type Filter -->
         <div class="filter-box">
-            <label for="typeFilter">Brand:</label>
+            <label for="typeFilter">Type:</label>
             <select id="typeFilter">
-                <option value="">All Brand</option>
+                <option value="">All Types</option>
             </select>
         </div>
         <div class="car-list" id="carList">
