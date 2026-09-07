@@ -6,16 +6,7 @@ class Crud extends Controller {
         $data['merekList'] = $this->model('Home_model')->getAllMerek() ?: []; // Pastikan array kosong kalau null
         $data['jenisList'] = $this->model('Home_model')->getAllJenis() ?: []; // Pastikan array kosong kalau null
         echo 'car-crud page';
-        $this->view('car-crud', $data);
-    }
-
-    public function insert() {
-        $data['judul'] = "Insert Car User Panel";
-        $data['carList'] = $this->model('Home_model')->getAllCars() ?: []; // Pastikan array kosong kalau null
-        $data['merekList'] = $this->model('Home_model')->getAllMerek() ?: []; // Pastikan array kosong kalau null
-        $data['jenisList'] = $this->model('Home_model')->getAllJenis() ?: []; // Pastikan array kosong kalau null
-        echo 'insert page (user panel)';
-        $this->view('insert', $data);
+        $this->view('admin/car-crud', $data);
     }
 
     public function test() {
