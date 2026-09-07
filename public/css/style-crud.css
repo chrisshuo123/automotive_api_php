@@ -172,6 +172,7 @@ button.second-button {
 .search-filter-container {
     display: flex;
     flex-direction: row;
+    flex-wrap: wrap;
     justify-content: space-between;
 }
 .search-box {
