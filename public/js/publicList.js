@@ -1,4 +1,5 @@
 import { getAllCars, getAllBrands, getAllTypes, BASEURL } from './script.js';
+import { initPagination } from './pagination.js';
 
 const carListEl = document.getElementById('carList');
 const searchInput = document.getElementById('searchInput');
@@ -22,6 +23,12 @@ function renderCarCard(car) {
         </div>
     `;
 }
+
+const pagination = initPagination({
+    containerEl: carListEl,
+    itemsPerPage: 5,
+    renderItem: renderCarCard
+});
 
 function renderTable(data) {
     if (!data || data.length === 0) {
@@ -78,7 +85,8 @@ function filterData() {
     // Setelah Sort
     console.log('setelah sort, filtered[0]: ', filtered[0]?.nama_mobil);
 
-    renderTable(filtered);
+    // renderTable(filtered);
+    pagination.setData(filtered);  // Ganti dari renderTable(filtered)
 }
 
 async function populateBrandFilter() {
@@ -117,5 +125,6 @@ typeFilter.addEventListener('change', filterData);
 
     await populateBrandFilter();
     await populateTypeFilter();
-    renderTable(allCars);
+    // renderTable(allCars);
+    pagination.setData(allCars); // <-- Ganti dari renderTable(allCars)
 })();
