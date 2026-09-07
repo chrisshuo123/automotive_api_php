@@ -78,11 +78,12 @@
         <h2>Car List</h2>
         <!-- Search and Filter Section -->
         <div class="search-filter-container">
+            <!-- Search Box Filter -->
             <div class="search-box">
                 <input type="text" id="searchInput" placeholder="Search by car title...">
                 <button>Search</button>
             </div>
-
+            <!-- Status Filter -->
             <div class="filter-box" style="margin-bottom: 75px;">
                 <label for="statusFilter">Status:</label>
                 <!-- <select id="statusFilter" onchange="filterCars()"> -->
@@ -92,13 +93,27 @@
                     <option value="need preview">Need Preview</option>
                 </select>
             </div>
-
+            <!-- Alphabet Sort -->
             <div>
                 <label for="alphabetSort">Sort</label>
                 <select id="alphabetSort">
                     <option value="">Default</option>
                     <option value="ascending">A-Z sort</option>
                     <option value="descending">Z-A sort</option>
+                </select>
+            </div>
+            <!-- Brand Filter -->
+            <div class="filter-box">
+                <label for="brandFilter">Brand:</label>
+                <select id="brandFilter">
+                    <option value="">All Brands</option>
+                </select>
+            </div>
+            <!-- Type Filter -->
+            <div class="filter-box">
+                <label for="typeFilter">Type:</label>
+                <select id="typeFilter">
+                    <option value="">All Types</option>
                 </select>
             </div>
 
