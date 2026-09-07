@@ -1,3 +1,4 @@
+-- ***** Cars Table *****
 create table automotive_api.cars (
 	idCars SERIAL PRIMARY KEY,
     nama_mobil varchar(100) not null,
@@ -11,11 +12,13 @@ alter table automotive_api.cars
 alter table automotive_api.cars
 	ALTER COLUMN idStatus_fk TYPE INTEGER USING idStatus_fk::INTEGER;
 
+-- ***** Merek Table *****
 CREATE TABLE automotive_api.merek (
 	idMerek SERIAL PRIMARY KEY,
 	namaMerek VARCHAR(100)
 );
 
+-- ***** Jenis Table *****
 CREATE TABLE automotive_api.jenis (
 	idMerek SERIAL PRIMARY KEY,
 	namaJenis VARCHAR(100)
@@ -24,10 +27,18 @@ CREATE TABLE automotive_api.jenis (
 ALTER TABLE automotive_api.jenis
 	RENAME COLUMN idMerek TO idJenis;
 	
-
+-- ***** Status Table *****
 CREATE TABLE automotive_api."status" (
 	idStatus SERIAL PRIMARY KEY,
 	namaStatus VARCHAR(100)
+);
+
+-- ***** User Table *****
+CREATE TABLE automotive_api.user (
+	idUser SERIAL PRIMARY KEY,
+	username VARCHAR(100) UNIQUE NOT NULL,
+	password VARCHAR(255) NOT NULL,
+	created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
 --Add Constraint for each Cars dropdown selection
@@ -91,7 +102,13 @@ UPDATE automotive_api.cars
 SET idStatus_fk = 2
 WHERE idCars BETWEEN 1 AND 49;
 
+-- Insert Admin user kedalam table user:
+INSERT INTO automotive_api.user (username, password)
+VALUES ('admin', '$2y$10$J3TE2C.mSouJnzaX.S5OIOAXLTwdiwSmSxqA7N9FqRFdWZx.IoCfG');
+-- HINT: password: passwordkamu123
+
 SELECT * FROM cars;
 SELECT * FROM merek;
 SELECT * FROM jenis;
 SELECT * FROM status;
+SELECT * FROM USER;
