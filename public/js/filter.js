@@ -1,7 +1,10 @@
-import { BASEURL, getAllCars, deleteCar } from './script.js';
+import { BASEURL, getAllCars, deleteCar, getAllBrands, getAllTypes } from './script.js';
+import { initPagination } from './pagination.js';
 
 const carListEl = document.getElementById('carList');
 const searchInput = document.getElementById('searchInput');
+const brandFilter = document.getElementById('brandFilter');
+const typeFilter = document.getElementById('typeFilter');
 const statusFilter = document.getElementById('statusFilter');
 const sortSelect = document.getElementById('alphabetSort');
 const clearBtn = document.getElementById("clearBtn");
@@ -49,6 +52,12 @@ function renderCarItem(car) {
     // NOTE: The 'Edit Car' Button now adjusts according to the car-crud.php's edit car button, by adding more data-id, called from modalEdit.js on editCar modalConfigs var.
 }
 
+const pagination = initPagination({
+    containerEl: carListEl,
+    itemsPerPage: 5,
+    renderItem: renderCarItem
+});
+
 function renderTable(data) {
     if (!data || data.length === 0) {
         carListEl.innerHTML = '<p>No cars found.</p>';
@@ -60,29 +69,47 @@ function renderTable(data) {
 function filterData() {
     const searchTerm = searchInput.value.toLowerCase().trim();
     const statusValue = statusFilter.value;
+    const brandValue = brandFilter.value;
+    const typeValue = typeFilter.value;
     const sortValue = sortSelect.value;
 
     console.log('sortValue: ', sortValue);
 
-    if(searchTerm === '' && (statusValue === '' || statusValue === 'all') && (sortValue === '')) {
-        renderTable(allCars);
+    if(searchTerm === '' && (statusValue === '' || statusValue === 'all')
+        && (brandValue === '' || brandValue === 'all')
+        && (typeValue === '' || typeValue === 'all')
+        && (sortValue === '')) {
+        // renderTable(allCars);
+        pagination.setData(allCars); // <-- Ganti dari renderTable(allCars)
         return;
     }
 
     const filtered = allCars.filter((car) => {
         const nameLower = car.nama_mobil.toLowerCase();
+        const brandLower = car.merek.toLowerCase();
+        const typeLower = car.jenis.toLowerCase();
         const statusLower = (car.status ?? '').toLowerCase();
 
         // Search Filterring
         const matchesSearch = searchTerm === '' ||
             nameLower.includes(searchTerm) ||
+            brandLower.includes(searchTerm) ||
+            typeLower.includes(searchTerm) ||
             statusLower.includes(searchTerm);
+
+        // Brand Filterring
+        const matchesBrand = brandValue === '' || brandValue === 'all' ||
+            brandLower === brandValue.toLowerCase();
+
+        // type Filterring
+        const matchesType = typeValue === '' || typeValue === 'all' ||
+            typeLower === typeValue.toLowerCase();
 
         // Status Filterring
         const matchesStatus = statusValue === '' || statusValue === 'all' ||
             statusLower === statusValue.toLowerCase();
 
-        return matchesSearch && matchesStatus;
+        return matchesSearch && matchesBrand && matchesType && matchesStatus;
     });
 
     console.log('sebelum sort, filtered[0]: ', filtered[0]?.nama_mobil);
@@ -98,7 +125,20 @@ function filterData() {
 
     console.log('setelah sort, filtered[0]: ', filtered[0]?.nama_mobil);
 
-    renderTable(filtered);
+    // renderTable(filtered);
+    pagination.setData(filtered);  // Ganti dari renderTable(filtered)
+}
+
+async function populateBrandFilter() {
+    const brand = await getAllBrands();
+    brandFilter.innerHTML = `<option value="">all</option>` +
+        brand.map(b => `<option value="${b.label}">${b.label}</option>`).join('');
+}
+
+async function populateTypeFilter() {
+    const type = await getAllTypes();
+    typeFilter.innerHTML = `<option value="">all</option>` +
+        type.map(t => `<option value="${t.label}">${t.label}</option>`).join('');
 }
 
 // Event Delegation for edit / delete, since rows are re-rendered dynamically
@@ -110,22 +150,31 @@ carListEl.addEventListener('click', (e) => {
 });
 
 searchInput.addEventListener('input', filterData);
+brandFilter.addEventListener('change', filterData);
+typeFilter.addEventListener('change', filterData);
 statusFilter.addEventListener('change', filterData);
 sortSelect.addEventListener('change', filterData);
 
 clearBtn.addEventListener('click', () => {
     searchInput.value = '';
+    brandFilter.value = '';
+    typeFilter.value = '';
     statusFilter.value = '';
     sortSelect.value = '';
     
     // Initial Render
-    renderTable(allCars);
+    // renderTable(allCars);
+    pagination.setData(allCars);  // <-- Ganti dari renderTable(allCars)
 });
 
 // Load once - PHP already rendered the first view, this just primes
 // 'allCars' in memory so filtering doesn't need a new fetch every time
 (async function init() {
     allCars = await getAllCars();
-    renderTable(allCars);
+
+    await populateBrandFilter();
+    await populateTypeFilter();
+    // renderTable(allCars);
+    pagination.setData(allCars);  // <-- Ganti dari renderTable(allCars)
     console.log('allCars[0]: ', allCars[0]); // cek bentuknya di sini dulu
 })();
