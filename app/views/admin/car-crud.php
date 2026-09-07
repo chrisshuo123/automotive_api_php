@@ -11,6 +11,7 @@
 </head>
 <body>
     <div class="container">
+        <a href="<?= BASEURL ?>/auth/logout"><button>Logout</button></a>
         <h1>Add new car</h1>
         <form id="insertCarForm" action="<?= BASEURL ?>/crud/insertCar" method="POST">
             <div class="form-group">
