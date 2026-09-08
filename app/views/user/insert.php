@@ -8,7 +8,7 @@
 </head>
 <body>
     <h1>Add new car</h1>
-    <form id="insertCarForm" action="<?= BASEURL ?>/crud/insertCar" method="POST">
+    <form id="insertCarUserForm" action="<?= BASEURL ?>/api/insertCar" method="POST">
         <div class="form-group">
             <label for="nama_mobil">Car Name: </label>
             <input type="text" id="nama_mobil" name="nama_mobil" required>
