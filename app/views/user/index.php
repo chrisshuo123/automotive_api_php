@@ -4,7 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="robots" content="noindex">
-    <link rel="stylesheet" href="../public/css/style.css">
+    <!-- <link rel="stylesheet" href="../public/css/style.css"> -->
+    <link rel="stylesheet" href="<?= BASEURL ?>/css/style.css">
     <title>Car Inventory</title>
 </head>
 <body>
@@ -38,6 +39,7 @@
             <div class="loading"><p>Loading cars...</p></div>
         </div>
     </div>
-    <script type="module" src="http://localhost/automotive_api_php/public/js/publicList.js"></script>
+    <!-- <script type="module" src="http://localhost/automotive_api_php/public/js/publicList.js"></script> -->
+    <script type="module" src="<?= BASEURL ?>/js/publicList.js"></script>
 </body>
 </html>

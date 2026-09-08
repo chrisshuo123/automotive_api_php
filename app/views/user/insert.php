@@ -3,7 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="../../public/css/style-crud.css">
+    <!-- <link rel="stylesheet" href="../../public/css/style-crud.css"> -->
+    <link rel="stylesheet" href="<?= BASEURL ?>/css/style-crud.css">
     <title>Insert Car</title>
 </head>
 <body>
@@ -56,9 +57,9 @@
     </form>
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
     <!-- <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script> -->
-    <script type="module" src="http://localhost/automotive_api_php/public/js/script.js"></script>
-    <script type="module" src="http://localhost/automotive_api_php/public/js/filter.js"></script>
-    <script type="module" src="http://localhost/automotive_api_php/public/js/modalEdit.js"></script>
-    <script type="module" src="http://localhost/automotive_api_php/public/js/modal.js"></script>
+    <script type="module" src="<?= BASEURL ?>/js/script.js"></script>
+    <script type="module" src="<?= BASEURL ?>/js/filter.js"></script>
+    <script type="module" src="<?= BASEURL ?>/js/modalEdit.js"></script>
+    <script type="module" src="<?= BASEURL ?>/js/modal.js"></script>
 </body>
 </html>
