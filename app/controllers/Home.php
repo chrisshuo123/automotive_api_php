@@ -4,7 +4,7 @@ class Home extends Controller {
         // echo 'home/index';
         echo 'home page';
         $this->view('user/index');
-        // For the models already being called via Crud::getCars() method globally to script.js
+        // For the models already being called via Api::getCars() method globally to script.js
     }
 
     public function insert() {
