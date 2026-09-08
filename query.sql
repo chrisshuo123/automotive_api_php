@@ -111,4 +111,4 @@ SELECT * FROM cars;
 SELECT * FROM merek;
 SELECT * FROM jenis;
 SELECT * FROM status;
-SELECT * FROM USER;
+SELECT * FROM user;
