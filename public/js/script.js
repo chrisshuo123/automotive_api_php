@@ -7,8 +7,8 @@ document.addEventListener('DOMContentLoaded', function() {
     if (form) {
         form.addEventListener('submit', function(e) {
             e.preventDefault();
-            const BASEURL = 'http://localhost/automotive_api_php/public';
-            console.log('BASEURL: ', BASEURL);
+            // const BASEURL = 'http://localhost/automotive_api_php/public';
+            // console.log('BASEURL: ', BASEURL);
             
             const formData = new FormData(this);
             // const data = Object.fromEntries(formData); // Bikin upload_foto 
@@ -88,7 +88,7 @@ export async function insertCarUser(formData) {
 
 export async function editCar(formData) {
     try {
-        const response = await fetch('http://localhost/automotive_api_php/public/crud/updateCar', {
+        const response = await fetch(BASEURL + '/crud/updateCar', {
             method: 'POST',
             body: formData  // FormData langsung, tanpa Content-Type manual (browser set otomatis + boundary)
         });
@@ -103,7 +103,7 @@ export async function editCar(formData) {
 // For Loading All List of Cars Row Data
 export async function getAllCars() {
     try {
-        const response = await fetch('http://localhost/automotive_api_php/public/api/getCars');
+        const response = await fetch(BASEURL + '/api/getCars');
         const result = await response.json();
         return result.data;  // Ambil array-nya dari dalam wrapper
     } catch(error) {
@@ -117,7 +117,7 @@ export function deleteCar(idcars) {
     if(confirm('Are you sure you want to delete this car?')) {
         console.log('Deleting car with ID: ', idcars);
 
-        fetch('http://localhost/automotive_api_php/public/crud/deleteCar', {
+        fetch(BASEURL + '/crud/deleteCar', {
             method: 'POST',
             headers: {'Content-Type': 'application/x-www-form-urlencoded'},
             body: 'idcars=' + idcars
@@ -146,7 +146,7 @@ export function deleteCar(idcars) {
 // To Load Lists of Brand Rows, primarily for the Modal Pop-Up Edit
 export async function getAllBrands() {
     try {
-        const response = await fetch('http://localhost/automotive_api_php/public/api/getMerek');
+        const response = await fetch(BASEURL + '/api/getMerek');
                                 // .then(res => res.json())             // Debugging
                                 // .then(console.log(result.data[0]));  // Debugging (; atas hapus)
         const result = await response.json();
@@ -162,7 +162,7 @@ export async function getAllBrands() {
 
 export async function insertBrand(namaMerek) {
     try {
-        const response = await fetch('http://localhost/automotive_api_php/public/crud/addMerek', {
+        const response = await fetch(BASEURL + '/crud/addMerek', {
             method: 'POST',
             headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
             body: 'namamerek= ' + encodeURIComponent(namaMerek)
@@ -177,7 +177,7 @@ export async function insertBrand(namaMerek) {
 
 export async function editBrand(idMerek, namaMerek) {
     try {
-        const response = await fetch('http://localhost/automotive_api_php/public/crud/editMerek', {
+        const response = await fetch(BASEURL + '/crud/editMerek', {
             method: 'POST',
             headers: {'Content-Type': 'application/x-www-form-urlencoded'},
             body: 'idmerek=' + encodeURIComponent(idMerek) + '&namamerek=' + encodeURIComponent(namaMerek)
@@ -192,7 +192,7 @@ export async function editBrand(idMerek, namaMerek) {
 
 export async function deleteBrand(idMerek) {
     try {
-        const response = await fetch('http://localhost/automotive_api_php/public/crud/deleteMerek', {
+        const response = await fetch(BASEURL + '/crud/deleteMerek', {
             method: 'POST', // Perlu sejenis Drop?
             headers: {'Content-Type': 'application/x-www-form-urlencoded'},
             body: 'idmerek=' + encodeURIComponent(idMerek)
@@ -207,7 +207,7 @@ export async function deleteBrand(idMerek) {
 
 export async function getAllTypes() {
     try {
-        const response = await fetch('http://localhost/automotive_api_php/public/api/getJenis');
+        const response = await fetch(BASEURL + '/api/getJenis');
         const result = await response.json();
         return result.data.map(j => ({
             value: j.idjenis,
@@ -221,7 +221,7 @@ export async function getAllTypes() {
 
 export async function getAllStatuses() {
     try {
-        const response = await fetch('http://localhost/automotive_api_php/public/api/getStatuses');
+        const response = await fetch(BASEURL + '/api/getStatuses');
         const result = await response.json();
         return result.data.map(s => ({
             value: s.idstatus,
