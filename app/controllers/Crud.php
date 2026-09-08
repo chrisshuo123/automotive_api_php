@@ -21,13 +21,6 @@ class Crud extends Controller {
         // console.log("Test method works!");
     }
 
-    public function getCars() {
-        header('Content-Type: application/json');
-        $cars = $this->model('Home_model')->getAllCars();
-        echo json_encode(['success' => true, 'data' => $cars]);
-        exit;
-    }
-
     public function insertCar() {
         // echo "insert car berhasil ditampilkan";
         // die(); // Hentikan eksekusi
@@ -132,13 +125,6 @@ class Crud extends Controller {
         }
     }
 
-    public function getMerek() {   // Merek (IND) <-> Brand (ENG)
-        header('Content-Type: application/json');
-        $idBrand = $this->model('Home_model')->getAllMerek();
-        echo json_encode(['success' => true, 'data' => $idBrand]);
-        exit;
-    }
-
     public function addMerek() {  // Merek (IND) <-> Brand (ENG)
         $namaMerek = $_POST['namamerek'] ?? '';
         $addMerek = $this->model('Home_model')->insertMerek(['namamerek' => $namaMerek]) ?: false;
@@ -171,19 +157,5 @@ class Crud extends Controller {
             header('Content-Type: application/json');
             echo json_encode(['success' => $result]);
         }
-    }
-
-    public function getJenis() {  // Jenis (IND) <-> Type (ENG)
-        header('Content-Type: application/json');
-        $cars = $this->model('Home_model')->getAllJenis();
-        echo json_encode(['success' => true, 'data' => $cars]);
-        exit;
-    }
-
-    public function getStatuses() {
-        header('Content-Type: application/json');
-        $cars = $this->model('Home_model')->getAllStatuses();
-        echo json_encode(['success' => true, 'data' => $cars]);
-        exit;
     }
 }
