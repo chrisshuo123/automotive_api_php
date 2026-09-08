@@ -1,8 +1,8 @@
 // BASEURL
 export const BASEURL = 'http://localhost/automotive_api_php/public';
 
-// Insert Car Form
 document.addEventListener('DOMContentLoaded', function() {
+    // Insert Car Form (via Admin CRUD)
     const form = document.getElementById('insertCarForm');
     if (form) {
         form.addEventListener('submit', function(e) {
@@ -39,6 +39,23 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
+    // Insert Car Form (via User Insert Form)
+    const insertUserForm = document.getElementById('insertCarUserForm'); // <- id berbeda dari form admin
+    if(insertUserForm) {
+        insertUserForm.addEventListener('submit', async function(e) {
+            e.preventDefault();
+            const formData = new FormData(this);
+            
+            const result = await insertCarUser(formData);
+            if(result.success) {
+                alert('Car being submitted successfully, please wait form admin approval');
+                location.reload();
+            } else {
+                alert('Failed to add Car.');
+            }
+        });
+    }
+
     const editForm = document.getElementById('editCarForm');
     if(editForm) {
         editForm.addEventListener('submit', async function(e) {
@@ -54,6 +71,20 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 });
+
+export async function insertCarUser(formData) {
+    try {
+        const response = await fetch(BASEURL + '/api/insertCar', {
+            method: 'POST',
+            body: formData
+        });
+        const result = await response.json();
+        return result;
+    } catch(error) {
+        console.error('Error inserting car (user): ', error);
+        return { success: false };
+    }
+}
 
 export async function editCar(formData) {
     try {
@@ -72,7 +103,7 @@ export async function editCar(formData) {
 // For Loading All List of Cars Row Data
 export async function getAllCars() {
     try {
-        const response = await fetch('http://localhost/automotive_api_php/public/crud/getCars');
+        const response = await fetch('http://localhost/automotive_api_php/public/api/getCars');
         const result = await response.json();
         return result.data;  // Ambil array-nya dari dalam wrapper
     } catch(error) {
@@ -115,7 +146,7 @@ export function deleteCar(idcars) {
 // To Load Lists of Brand Rows, primarily for the Modal Pop-Up Edit
 export async function getAllBrands() {
     try {
-        const response = await fetch('http://localhost/automotive_api_php/public/crud/getMerek');
+        const response = await fetch('http://localhost/automotive_api_php/public/api/getMerek');
                                 // .then(res => res.json())             // Debugging
                                 // .then(console.log(result.data[0]));  // Debugging (; atas hapus)
         const result = await response.json();
@@ -176,7 +207,7 @@ export async function deleteBrand(idMerek) {
 
 export async function getAllTypes() {
     try {
-        const response = await fetch('http://localhost/automotive_api_php/public/crud/getJenis');
+        const response = await fetch('http://localhost/automotive_api_php/public/api/getJenis');
         const result = await response.json();
         return result.data.map(j => ({
             value: j.idjenis,
@@ -190,7 +221,7 @@ export async function getAllTypes() {
 
 export async function getAllStatuses() {
     try {
-        const response = await fetch('http://localhost/automotive_api_php/public/crud/getStatuses');
+        const response = await fetch('http://localhost/automotive_api_php/public/api/getStatuses');
         const result = await response.json();
         return result.data.map(s => ({
             value: s.idstatus,
