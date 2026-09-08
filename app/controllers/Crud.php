@@ -1,4 +1,6 @@
 <?php
+require_once __DIR__ . '/../config/config.php';
+
 class Crud extends Controller {
     public function __construct() {
         if (!isset($_SESSION['user_id'])) {
@@ -27,21 +29,58 @@ class Crud extends Controller {
         if($_SERVER['REQUEST_METHOD'] === 'POST') {
             // Untuk upload files/photo:
             $namaFoto = '';
+            $uploadSuccess = false;
 
             // Handle file upload kalau ada
             if (isset($_FILES['image']) && $_FILES['image']['error'] === UPLOAD_ERR_OK) {
-                $uploadDir = __DIR__ . '/../../public/img/';  // sesuaikan path relatif dari lokasi controller
-                $ext = pathinfo($_FILES['image']['name'], PATHINFO_EXTENSION);
+                $uploadDir = PUBLIC_PATH . '/img/';  // sesuaikan path relatif dari lokasi controller
+                // Create directory if $uploadDir doesn't exits
+                if (!is_dir($uploadDir)) {
+                    if(!mkdir($uploadDir, 0777, true)) {
+                        header('Content-Type: application/json');
+                        echo json_encode(['success' => false, 'message' => 'Failed creating upload directory']);
+                        exit;
+                    }
+                }
+
+                // Validate file extension (optional but recommended)
+                $allowed = ['jpg', 'jpeg', 'png', 'gif', 'tiff', 'webp'];
+                // $ext = pathinfo($_FILES['image']['name'], PATHINFO_EXTENSION);
+                $ext = strtolower(pathinfo($_FILES['image']['name'], PATHINFO_EXTENSION));
+                if(!in_array($ext, $allowed)) {
+                    header('Content-Type: application/json');
+                    echo json_encode(['success' => false, 'message' => 'File type not allowed']);
+                    exit;
+                }
+                
                 $namaFoto = uniqid('car_') . '.' . $ext; // Nama file unik, hindari bentrok nama sama
                 $targetPath = $uploadDir . $namaFoto;
 
-                if(!move_uploaded_file($_FILES['image']['tmp_name'], $targetPath)) {
+                // if(!move_uploaded_file($_FILES['image']['tmp_name'], $targetPath)) {
+                //     header('Content-Type: application/json');
+                //     echo json_encode(['success' => false, 'message' => 'Gagal Upload Foto']);
+                //     exit;
+                // }
+                // Move file with error checking
+                if(move_uploaded_file($_FILES['image']['tmp_name'], $targetPath)) {
+                    $uploadSuccess = true;
+                } else {
+                    // Failed handle error
                     header('Content-Type: application/json');
-                    echo json_encode(['success' => false, 'message' => 'Gagal Upload Foto']);
+                    echo json_encode(['success' => false, 'message' => 'Fail to upload photo']);
+                    // $namaFoto = ''; // Reset
                     exit;
                 }
-            };
+            } else {
+                // No file uploaded - decide if this is an error or acceptable
+                // If image is optional, continue without exiting
+                // If image is required, exit with error
+                header('Content-Type: application/json');
+                echo json_encode(['success' => false, 'message' => 'No uploaded files']);
+                exit;
+            }
 
+            // Prepare the data if only we have proceed here (upload success)
             $data = [
                 'nama_mobil' => $_POST['nama_mobil'] ?? '',
                 'idMerek_fk' => $_POST['idMerek_fk'] ?? null,
@@ -54,7 +93,12 @@ class Crud extends Controller {
             $result = $this->model('Home_model')->insertCar($data);
 
             header('Content-Type: application/json');
-            echo json_encode(['success' => (bool)$result, 'id' => $result]);
+            echo json_encode([
+                'success' => (bool)$result,
+                'id' => $result,
+                'upload_success' => $uploadSuccess,
+                'filename' => $namaFoto
+            ]);
             exit;
         }
     }
